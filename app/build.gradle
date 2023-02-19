@@ -20,6 +20,11 @@ dependencies {
     // Use JUnit Jupiter for testing.
     testImplementation 'org.junit.jupiter:junit-jupiter:5.8.2'
 
+    // nats client
+    implementation 'io.nats:jnats:2.16.8'
+    // java money api
+    implementation 'javax.money:money-api:1.1'
+
     // This dependency is used by the application.
     implementation 'com.google.guava:guava:31.0.1-jre'
 }
