@@ -36,9 +36,4 @@ public class AppRepository {
                 .filter(l -> l.getId() == id)
                 .findFirst();
     }
-    public Loan findLoanById(int id) {
-        return loans.stream()
-                .filter(l -> l.getId() == id)
-                .findFirst().get();
-    }
 }
