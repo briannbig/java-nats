@@ -24,6 +24,9 @@ dependencies {
     implementation 'io.nats:jnats:2.16.8'
     // java money api
     implementation 'javax.money:money-api:1.1'
+    // Jackson databind
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.4'
+
 
     // This dependency is used by the application.
     implementation 'com.google.guava:guava:31.0.1-jre'

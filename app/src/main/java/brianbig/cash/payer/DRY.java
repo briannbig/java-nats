@@ -1,27 +1,37 @@
 package brianbig.cash.payer;
 
 import brianbig.cash.payer.model.Loan;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.util.Random;
 
 /**
  * @author Brian Barasa
  */
 public final class DRY {
-    public static final Gson gson = new GsonBuilder().create();
+    public static final ObjectMapper MAPPER = new ObjectMapper();
     public static String LoanToJSon(Loan loan) {
-        return gson.toJson(loan);
+        try {
+            return MAPPER.writeValueAsString(loan);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
 
     }
     public static Loan LoanFromJSon(String json) {
-        return gson.fromJson(json, Loan.class);
+        try {
+            return MAPPER.readValue(json, Loan.class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
-    public static String LoanRepayRequestToJSon(LoanRepayRequest loanRepayRequest) {
-        return gson.toJson(loanRepayRequest);
 
-    }
-    public static LoanRepayRequest LoanRepayRequestFromJSon(String json) {
-        return gson.fromJson(json, LoanRepayRequest.class);
+    public static int generateRandomInt() {
+        Random rand = new Random();
+        int uBound = 100;
+        return rand.nextInt(uBound);
+
     }
 
 }
