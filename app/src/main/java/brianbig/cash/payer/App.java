@@ -3,10 +3,84 @@
  */
 package brianbig.cash.payer;
 
-public class App {
+import brianbig.cash.payer.model.Customer;
+import brianbig.cash.payer.model.Loan;
+import brianbig.cash.payer.queue.LoanApplicationPublisher;
+import brianbig.cash.payer.queue.LoanApplicationSubscriber;
+import brianbig.cash.payer.queue.LoanRepayPublisher;
+import brianbig.cash.payer.queue.LoanRepaySubscriber;
+import brianbig.cash.payer.repo.AppRepository;
+import brianbig.cash.payer.worker.TopUpProcessor;
+import io.nats.client.JetStreamApiException;
 
+import java.io.IOException;
+
+public class App {
+    private static final AppRepository appRepository = AppRepository.getInstance();
+
+
+    private static final LoanRepayPublisher repayPublisher = new LoanRepayPublisher();
+    private static final LoanApplicationPublisher applicationPublisher = new LoanApplicationPublisher();
+    private static final TopUpProcessor topUpProcessor = new TopUpProcessor();
+
+    public App() {
+    }
 
     public static void main(String[] args) {
+        initSubscribers();
+        initSampleData();
+    }
+
+    public static void initSubscribers() {
+        try {
+            new LoanRepaySubscriber();
+            new LoanApplicationSubscriber();
+        } catch (JetStreamApiException | IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+
+    private static void initSampleData() {
+        Customer customer = new Customer();
+        customer.setId(1);
+        customer.setEmail("cust@loans.com");
+        Customer testCustomer = appRepository.save(customer).orElse(null);
+
+        Loan loan1 = new Loan();
+        loan1.setId(1);
+        loan1.setAmountLend(1000);
+        loan1.setCustomer(testCustomer);
+        applicationPublisher.publish(appRepository.save(loan1).get());
+
+        Loan loan2 = new Loan();
+        loan2.setId(2);
+        loan2.setAmountLend(2000);
+        loan2.setCustomer(testCustomer);
+        applicationPublisher.publish(appRepository.save(loan2).get());
+
+        Loan loan3 = new Loan();
+        loan3.setId(3);
+        loan3.setAmountLend(3000);
+        loan3.setCustomer(testCustomer);
+        applicationPublisher.publish(appRepository.save(loan3).get());
+
+        repayPublisher.publish(appRepository.save(loan1).get());
+
+        try{
+            Thread.sleep(10000);
+            topUpProcessor.topUpAmount(customer, 1000);
+            topUpProcessor.topUpAmount(customer, 500);
+            topUpProcessor.topUpAmount(customer, 1000);
+            topUpProcessor.topUpAmount(customer, 2000);
+            topUpProcessor.topUpAmount(customer, 500);
+            topUpProcessor.topUpAmount(customer, 10000);
+
+
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 }
