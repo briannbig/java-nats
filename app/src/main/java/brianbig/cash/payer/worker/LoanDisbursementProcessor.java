@@ -23,11 +23,12 @@ public class LoanDisbursementProcessor implements LoanWorker{
             return -1;
         }
         try {
-            Thread.sleep(10000);
+            System.out.println("Disbursing...");
+            Thread.sleep(3000);
             var loan_ = optionalLoan.get();
             loan_.setStatus(LoanStatus.DISBURSED);
-            appRepo.getLoans().remove(optionalLoan.get());
-            appRepo.getLoans().add(loan_);
+            appRepo.save(loan_);
+            System.out.println("Loan: " + loan_ + "disbursement complete");
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }

@@ -8,5 +8,5 @@ import brianbig.cash.payer.repo.AppRepository;
  */
 public interface BaseLoanRepayProcessor {
     AppRepository appRepo = AppRepository.getInstance();
-    int process(Loan loan, double amount);
+    int process(Loan loan);
 }
