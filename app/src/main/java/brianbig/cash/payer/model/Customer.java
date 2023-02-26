@@ -10,14 +10,13 @@ import java.util.stream.Collectors;
  */
 public class Customer {
 
-    private static int id;
+    private int id;
     private String email;
-    private List<Loan> loans;
+    private double accBalance = 0.0;
 
-    public Customer() {
-        id += id;
+    public void setId(int id) {
+        this.id = id;
     }
-
     public int getId() {
         return id;
     }
@@ -30,26 +29,50 @@ public class Customer {
         return email;
     }
 
-    public void setLoans(List<Loan> loans) {
-        this.loans = loans;
+
+    public double getAccBalance() {
+        return accBalance;
     }
 
-    public List<Loan> getLoans() {
+    public void setAccBalance(double accBalance) {
+        this.accBalance = accBalance;
+    }
+
+    public double deductAccountBalance(double amount) {
+        if (amount <= 0){
+            System.out.println("Cant deduct amount less than 1");
+            return -1;
+        }
+        return accBalance -= amount;
+
+    }
+
+    public double topUpBalance(double amount){
+        if (amount <= 0){
+            System.out.println("Cant top up amount less than 1");
+            return -1;
+        }
+        return accBalance += amount;
+    }
+
+
+    public List<Loan> fetchLoans() {
         return AppRepository.getInstance().getLoans()
                 .stream().filter(l -> l.getCustomer().getId() == id)
                 .toList();
     }
 
     public List<Loan> getActiveLoans() {
-        return loans.stream()
+        return AppRepository.getInstance().getLoans().stream()
                 .filter(l -> l.status != LoanStatus.REPAID &&
                                 (l.status == LoanStatus.DISBURSED || l.status == LoanStatus.PAYING)
                 ).collect(Collectors.toList());
     }
 
-    public void fetchLoans() {
-        loans = AppRepository.getInstance().getLoans()
-                .stream().filter(l -> l.getCustomer().getId() == id)
-                .toList();
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "id= '" + id +
+                "' email='" + email + '\'' + '}';
     }
 }

@@ -4,23 +4,19 @@ package brianbig.cash.payer.model;
  * @author Brian Barasa
  */
 public class Loan {
-    private static int id;
+    private int id;
     Customer customer;
     double amountLend;
     double amountRepaid;
     int status = LoanStatus.PENDING;
 
 
-    public Loan() {
-        id += id;
-    }
-
     public int getId() {
         return id;
     }
 
     public void setId(int id) {
-        Loan.id = id;
+        this.id = id;
     }
 
     public Customer getCustomer() {
@@ -55,5 +51,14 @@ public class Loan {
         this.status = status;
     }
 
-
+    @Override
+    public String toString() {
+        return "Loan{" +
+                "id=" + id +
+                ", customer=" + customer.getId() + customer.getEmail() +
+                ", amountLend=" + amountLend +
+                ", amountRepaid=" + amountRepaid +
+                ", status=" + status +
+                '}';
+    }
 }
