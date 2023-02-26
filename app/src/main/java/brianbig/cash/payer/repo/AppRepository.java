@@ -36,4 +36,30 @@ public class AppRepository {
                 .filter(l -> l.getId() == id)
                 .findFirst();
     }
+
+    public Optional<Customer> findCustomerById(int id) {
+        return customers.stream()
+                .filter(c -> c.getId() == id)
+                .findFirst();
+    }
+
+    public List<Customer> getCustomers() {
+        return customers;
+    }
+
+    public Optional<Customer> save(Customer customer) {
+        var id = customer.getId();
+        var optionalCustomer = findCustomerById(id);
+        optionalCustomer.ifPresent(value -> customers.remove(value));
+        customers.add(customer);
+        return findCustomerById(id);
+    }
+
+    public Optional<Loan> save(Loan loan) {
+        var id = loan.getId();
+        var tempLoan  = getLoanById(id);
+        tempLoan.ifPresent(value -> loans.remove(value));
+        loans.add(loan);
+        return getLoanById(id);
+    }
 }
