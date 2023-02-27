@@ -6,9 +6,9 @@ package brianbig.cash.payer;
 import brianbig.cash.payer.model.Customer;
 import brianbig.cash.payer.model.Loan;
 import brianbig.cash.payer.queue.LoanApplicationPublisher;
-import brianbig.cash.payer.queue.LoanApplicationSubscriber;
+import brianbig.cash.payer.queue.LoanApplicationJetStreamConsumer;
 import brianbig.cash.payer.queue.LoanRepayPublisher;
-import brianbig.cash.payer.queue.LoanRepaySubscriber;
+import brianbig.cash.payer.queue.LoanRepayJetStreamConsumer;
 import brianbig.cash.payer.repo.AppRepository;
 import brianbig.cash.payer.worker.TopUpProcessor;
 import io.nats.client.JetStreamApiException;
@@ -33,8 +33,8 @@ public class App {
 
     public static void initSubscribers() {
         try {
-            new LoanRepaySubscriber();
-            new LoanApplicationSubscriber();
+            new LoanRepayJetStreamConsumer();
+            new LoanApplicationJetStreamConsumer();
         } catch (JetStreamApiException | IOException e) {
             throw new RuntimeException(e);
         }

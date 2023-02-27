@@ -9,13 +9,13 @@ import java.io.IOException;
 /**
  * @author Brian Barasa
  */
-public class LoanRepaySubscriber extends Subscriber {
+public class LoanRepayJetStreamConsumer extends JetStreamConsumer {
 
     final LoanRepayProcessor processor = new LoanRepayProcessor();
 
     final String subject = "loan.repay";
 
-    public LoanRepaySubscriber() throws JetStreamApiException, IOException {
+    public LoanRepayJetStreamConsumer() throws JetStreamApiException, IOException {
     }
 
     @Override

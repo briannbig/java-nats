@@ -9,7 +9,7 @@ import java.io.IOException;
 /**
  * @author Brian Barasa
  */
-public class LoanApplicationSubscriber extends Subscriber{
+public class LoanApplicationJetStreamConsumer extends JetStreamConsumer {
 
     final LoanApplicationProcessor processor = new LoanApplicationProcessor();
 
@@ -17,7 +17,7 @@ public class LoanApplicationSubscriber extends Subscriber{
 
     final String subject = "loan.apply";
 
-    public LoanApplicationSubscriber() throws JetStreamApiException, IOException {
+    public LoanApplicationJetStreamConsumer() throws JetStreamApiException, IOException {
     }
 
     @Override

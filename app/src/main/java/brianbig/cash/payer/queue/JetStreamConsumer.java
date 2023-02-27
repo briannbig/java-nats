@@ -10,13 +10,13 @@ import java.io.IOException;
 /**
  * @author Brian Barasa
  */
-public abstract class Subscriber implements MessageHandler {
+public abstract class JetStreamConsumer implements MessageHandler {
     final JetStream js = NatsConnection.getInstance().getJetStream();
     final Connection nc = NatsConnection.getInstance().getNC();
     JetStreamSubscription subscription;
     Dispatcher dispatcher;
 
-    public Subscriber() throws JetStreamApiException, IOException {
+    public JetStreamConsumer() throws JetStreamApiException, IOException {
         dispatcher = nc.createDispatcher(this);
         dispatcher.subscribe(subject());
         subscription = js.subscribe(subject(), dispatcher, this, false);
