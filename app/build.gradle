@@ -21,7 +21,7 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
 
     // nats client
-    implementation 'io.nats:jnats:2.17.6'
+    implementation 'io.nats:jnats:2.19.1'
     // java money api
     implementation 'javax.money:money-api:1.1'
     // Jackson databind
